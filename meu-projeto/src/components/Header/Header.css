@@ -1,0 +1,97 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+}
+
+/* Ajuste de espaçamento entre os ícones da direita */
+.header-left .icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  margin-left: 20px !important; /* Não esqueça do ponto e vírgula antes do !important */
+  margin-right: 30px;
+}
+
+.alert-icon:hover {
+  color: var(--first-color);
+}
+
+.login-icon:hover {
+  color: var(--first-color);
+}
+
+/* Ajuste para tablets (por ex., largura máxima de 768px) */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  /* Reduz o gap entre ícones */
+  .header-right {
+    gap: 10px;
+  }
+
+  /* Caso queira reduzir a largura do sidebar em tablets */
+  .sidebar.open {
+    width: 160px;
+  }
+
+  .sidebar.closed {
+    width: 50px;
+  }
+}
+
+/* Ajuste para celulares (por ex., largura máxima de 480px) */
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  /* Logo menor ainda no mobile */
+  .logo {
+    height: 30px;
+  }
+
+  /* Ícones do header podem ficar em outra linha */
+  .header-right {
+    margin-top: 10px;
+    gap: 8px;
+  }
+
+  /* Sidebar menor no mobile */
+  .sidebar.open {
+    width: 140px;
+  }
+
+  .sidebar.closed {
+    width: 50px;
+  }
+
+  /* Ajuste do tamanho da fonte, caso necessário */
+  .sidebar h2 {
+    font-size: 1.25rem;
+  }
+}
