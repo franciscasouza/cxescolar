@@ -6,6 +6,7 @@
   padding: 15px 20px;
   border-bottom: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .header-left,
@@ -15,18 +16,14 @@
 }
 
 .logo {
-  height: 50px;
+  height: 60px;
 }
 
-/* Ajuste de espaçamento entre os ícones da direita */
-.header-left .icon {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  color: #333;
+.header-right .icon {
+  font-size: 1.3rem;
+  color: var(--link-color);
   cursor: pointer;
-  margin-left: 20px !important; /* Não esqueça do ponto e vírgula antes do !important */
-  margin-right: 30px;
+  margin-left: 20px;
 }
 
 .alert-icon:hover {
@@ -37,61 +34,93 @@
   color: var(--first-color);
 }
 
-/* Ajuste para tablets (por ex., largura máxima de 768px) */
-@media (max-width: 768px) {
-  .header {
-    padding: 10px;
-  }
-
-  .logo {
-    height: 40px;
-  }
-
-  /* Reduz o gap entre ícones */
-  .header-right {
-    gap: 10px;
-  }
-
-  /* Caso queira reduzir a largura do sidebar em tablets */
-  .sidebar.open {
-    width: 160px;
-  }
-
-  .sidebar.closed {
-    width: 50px;
-  }
+.user-container {
+  position: relative;
 }
 
-/* Ajuste para celulares (por ex., largura máxima de 480px) */
-@media (max-width: 480px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-  }
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 5px;
+  z-index: 9999;
+}
 
-  /* Logo menor ainda no mobile */
-  .logo {
-    height: 30px;
-  }
+.user-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-  /* Ícones do header podem ficar em outra linha */
+.user-dropdown li {
+  border-bottom: 1px solid #eee;
+}
+
+.user-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background: #f5f5f5;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+.mobile-menu .icon {
+  display: block;
+  margin: 10px 0;
+}
+
+@media (max-width: 768px) {
   .header-right {
-    margin-top: 10px;
-    gap: 8px;
+    display: none;
   }
 
-  /* Sidebar menor no mobile */
-  .sidebar.open {
-    width: 140px;
+  .mobile-menu-btn {
+    display: block;
+    margin-left: 20px;
   }
 
-  .sidebar.closed {
-    width: 50px;
-  }
-
-  /* Ajuste do tamanho da fonte, caso necessário */
-  .sidebar h2 {
-    font-size: 1.25rem;
+  .mobile-menu {
+    display: block;
   }
 }

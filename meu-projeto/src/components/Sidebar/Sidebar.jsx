@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { FaHome, FaChartLine, FaCog, FaBars } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
+import { FaHome, FaChartLine, FaCog, FaMicrosoft  } from 'react-icons/fa';
 import './Sidebar.css';
 import PropTypes from 'prop-types';
 
@@ -9,28 +9,28 @@ function Sidebar({ isOpen, onToggle }) {
       <div className="sidebar-top">
         {isOpen && <h2>Caixa Escolar</h2>}
         <button className="toggle-btn" onClick={onToggle}>
-          <FaBars />
+          <FaMicrosoft  />
         </button>
       </div>
       <nav>
         <ul>
           <li>
-            <Link to="/">
+            <NavLink to="/" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
               <FaHome className="icon" />
               {isOpen && <span>Home</span>}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/reports">
+            <NavLink to="/reports"className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
               <FaChartLine className="icon" />
               {isOpen && <span>Reports</span>}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/settings">
+            <NavLink to="/settings"className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
               <FaCog className="icon" />
               {isOpen && <span>Settings</span>}
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>

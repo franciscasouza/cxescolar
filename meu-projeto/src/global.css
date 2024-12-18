@@ -155,9 +155,9 @@
     /* text-shadow: 0 0 8px var(--c-gray); */
   }
 
-  footer {
+  /* footer {
     margin-top: 3rem;
-  }
+  } */
 
   label {
     font-size: var(--small-font-size);
