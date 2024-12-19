@@ -113,6 +113,14 @@
   text-decoration: underline;
 }
 
+.bg-login {
+  min-height: 100vh;
+  background-image: url("../../assets/bk_01.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top 55% right 61%;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .login-card {

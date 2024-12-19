@@ -37,7 +37,7 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container bg-login">
       <div className="login-card">
         <div className="login-image-container">
           <img src={logologin} alt="Logo" className="login-image" />
