@@ -1,10 +1,11 @@
 // Header.jsx
+import PropTypes from 'prop-types';
 import './Header.css';
 import { FaUser, FaBell, FaBars } from 'react-icons/fa';
 import logo from '../../assets/LOGO_PMVV_2021_2.png'; 
 import { useState } from 'react';
 
-function Header() {
+function Header({ onLogout }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
@@ -16,18 +17,12 @@ function Header() {
     setIsUserDropdownOpen(!isUserDropdownOpen);
   };
 
-  const encerrarSessao = () => {
-    alert('Encerrar sessão'); 
-    // Ação real de logout deve ser implementada aqui
-  }
-
   return (
     <header className="header">
       <div className="header-left">
         <img src={logo} alt="Logo" className="logo" />
       </div>
 
-      {/* Ícones no desktop */}
       <div className="header-right">
         <FaBell className="icon alert-icon" />
         <div className="user-container">
@@ -37,30 +32,32 @@ function Header() {
               <ul>
                 <li><a href="/perfil">Meu Perfil</a></li>
                 <li><a href="/configuracoes">Configurações</a></li>
-                <li><button onClick={encerrarSessao}>Terminar Sessão</button></li>
+                <li><button onClick={onLogout}>Terminar Sessão</button></li>
               </ul>
             </div>
           )}
         </div>
       </div>
 
-      {/* Botão hamburguer (mobile) */}
       <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
         <FaBars />
       </button>
 
-      {/* Menu móvel - sem ícones, apenas links de texto */}
       {isMobileMenuOpen && (
         <div className="mobile-menu">
           <ul>
             <li><a href="/perfil">Meu Perfil</a></li>
             <li><a href="/configuracoes">Configurações</a></li>
-            <li><button onClick={encerrarSessao}>Terminar Sessão</button></li>
+            <li><button onClick={onLogout}>Terminar Sessão</button></li>
           </ul>
         </div>
       )}
     </header>
   );
 }
+
+Header.propTypes = {
+  onLogout: PropTypes.func.isRequired,
+};
 
 export default Header;

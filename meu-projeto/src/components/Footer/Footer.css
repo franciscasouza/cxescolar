@@ -1,6 +1,6 @@
 .footer {
-  background: var(--first-color);
-  color: var(--c-white);
+  background: #f5f5f5;
+  color: var(--link-color-2);
   display: flex; /* Exibe itens em linha */
   align-items: center; /* Centraliza verticalmente */
   justify-content: center; /* Centraliza horizontalmente */
@@ -11,7 +11,7 @@
 }
 
 .footer-logo {
-  max-height: 50px; /* Ajuste conforme a necessidade */
+  max-height: 30px; /* Ajuste conforme a necessidade */
   display: block;
 }
 .footer a {
