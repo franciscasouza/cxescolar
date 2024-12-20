@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaChartLine, FaCog, FaMicrosoft  } from 'react-icons/fa';
+import { FaHome, FaChartLine, FaCog, FaMicrosoft, FaSchool  } from 'react-icons/fa';
 import './Sidebar.css';
 import PropTypes from 'prop-types';
 
@@ -30,6 +30,15 @@ function Sidebar({ isOpen, onToggle }) {
             <NavLink to="/settings"className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
               <FaCog className="icon" />
               {isOpen && <span>Settings</span>}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/escolas" 
+              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+            >
+              <FaSchool className="icon" />
+              {isOpen && <span>Escolas</span>}
             </NavLink>
           </li>
         </ul>

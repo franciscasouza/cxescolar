@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Login from './pages/Login/Login';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
+import Escolas from './pages/EscolaPages/EscolasPages'; // Importa o componente da página de Escolas
+import DetalhesEscola from './pages/EscolaPages/DetalhesEscola'; // Importa o componente da página de Detalhes da Escola
 import PropTypes from 'prop-types';
 
 function ProtectedRoute({ isAuthenticated, children }) {
@@ -67,7 +69,8 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    
     localStorage.removeItem('token');
     setIsAuthenticated(false);
     navigate('/login'); // Redireciona para a página de login
@@ -123,6 +126,36 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
         } 
       />
 
+      {/* Rota de Dashboard com Escolas */}
+      <Route 
+        path="/escolas" 
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout 
+              isSidebarOpen={isSidebarOpen} 
+              onToggle={toggleSidebar} 
+              onLogout={handleLogout}
+            >
+              <Escolas /> {/* Página de Escolas */}
+            </DashboardLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+<Route 
+        path="/escolas/:id" 
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout 
+              isSidebarOpen={isSidebarOpen} 
+              onToggle={toggleSidebar} 
+              onLogout={handleLogout}
+            >
+              <DetalhesEscola />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } 
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

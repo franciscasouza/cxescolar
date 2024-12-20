@@ -364,7 +364,7 @@
 
   /* ========== Input ========== */
 
-  input,
+  /* input,
   .custom-file-label,
   textarea,
   .form-select,
@@ -374,7 +374,7 @@
     border: 1px solid var(--c-gray);
     border-radius: 0.25rem;
     font-size: var(--small-font-size);
-  }
+  } */
 
   .form-check-input:checked {
     background-color: var(--first-color);
