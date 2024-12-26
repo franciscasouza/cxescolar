@@ -1,64 +1,80 @@
-// Header.jsx
+// src/components/Layout/Header.jsx
+import  { useState } from 'react';
 import PropTypes from 'prop-types';
-import './Header.css';
-import { FaUser, FaBell, FaBars } from 'react-icons/fa';
-import logo from '../../assets/LOGO_PMVV_2021_2.png'; 
-import { useState } from 'react';
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Tooltip } from '@mui/material';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useTheme, useMediaQuery } from '@mui/material';
 
-function Header({ onLogout }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  
+const Header = ({ onLogout, handleDrawerToggle }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleUserMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const toggleUserDropdown = () => {
-    setIsUserDropdownOpen(!isUserDropdownOpen);
+  const handleUserMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
-    <header className="header">
-      <div className="header-left">
-        <img src={logo} alt="Logo" className="logo" />
-      </div>
-
-      <div className="header-right">
-        <FaBell className="icon alert-icon" />
-        <div className="user-container">
-          <FaUser className="icon login-icon" onClick={toggleUserDropdown} />
-          {isUserDropdownOpen && (
-            <div className="user-dropdown">
-              <ul>
-                <li><a href="/perfil">Meu Perfil</a></li>
-                <li><a href="/configuracoes">Configurações</a></li>
-                <li><button onClick={onLogout}>Terminar Sessão</button></li>
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
-        <FaBars />
-      </button>
-
-      {isMobileMenuOpen && (
-        <div className="mobile-menu">
-          <ul>
-            <li><a href="/perfil">Meu Perfil</a></li>
-            <li><a href="/configuracoes">Configurações</a></li>
-            <li><button onClick={onLogout}>Terminar Sessão</button></li>
-          </ul>
-        </div>
-      )}
-    </header>
+    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <Toolbar>
+        {isMobile && (
+          <IconButton
+            color="inherit"
+            aria-label="abrir drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          Meu Dashboard
+        </Typography>
+        <Tooltip title="Notificações">
+          <IconButton color="inherit">
+            <NotificationsIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Configurações de Conta">
+          <IconButton
+            color="inherit"
+            onClick={handleUserMenuOpen}
+          >
+            <AccountCircle />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleUserMenuClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <MenuItem onClick={handleUserMenuClose}>Meu Perfil</MenuItem>
+          <MenuItem onClick={handleUserMenuClose}>Configurações</MenuItem>
+          <MenuItem onClick={() => { handleUserMenuClose(); onLogout(); }}>Terminar Sessão</MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
 Header.propTypes = {
   onLogout: PropTypes.func.isRequired,
+  handleDrawerToggle: PropTypes.func.isRequired,
 };
 
 export default Header;

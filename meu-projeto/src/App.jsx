@@ -1,14 +1,15 @@
+// src/App.jsx
+import  { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import DashboardLayout from './components/Layout/DashboardLayout';
 import AuthLayout from './components/Layout/AuthLayout';
 import Home from './pages/Home';
 import Login from './pages/Login/Login';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
-import Escolas from './pages/EscolaPages/EscolasPages'; // Importa o componente da página de Escolas
-import DetalhesEscola from './pages/EscolaPages/DetalhesEscola'; // Importa o componente da página de Detalhes da Escola
-import PropTypes from 'prop-types';
+import Escolas from './pages/EscolaPages/EscolasPages';
+import DetalhesEscola from './pages/EscolaPages/DetalhesEscola';
 
 function ProtectedRoute({ isAuthenticated, children }) {
   if (!isAuthenticated) {
@@ -23,14 +24,11 @@ ProtectedRoute.propTypes = {
 };
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
     <Router>
       <AppContent 
-        isSidebarOpen={isSidebarOpen} 
-        setIsSidebarOpen={setIsSidebarOpen} 
         isAuthenticated={isAuthenticated} 
         setIsAuthenticated={setIsAuthenticated} 
       />
@@ -38,39 +36,17 @@ function App() {
   );
 }
 
-function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAuthenticated }) {
+function AppContent({ isAuthenticated, setIsAuthenticated }) {
   const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  }
-
-  const handleLogin = async (username, password) => {
-    try {
-      const response = await fetch('https://localhost:7165/api/Autenticacao/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-      
-      if (response.ok) {
-        const token = await response.text(); 
-        localStorage.setItem('token', token);
-        setIsAuthenticated(true);
-        navigate('/'); // Redireciona o usuário após login bem-sucedido
-      } else {
-        alert('Falha na autenticação. Verifique suas credenciais.');
-      }
-    } catch (error) {
-      console.error('Erro ao conectar-se à API:', error);
-      alert('Erro na autenticação.');
-    }
+  const handleLogin = (username, password) => {
+    console.log('Login bem-sucedido para:', username); // Log de depuração
+    // Aqui você pode decodificar o token ou realizar outras operações com username e password
+    setIsAuthenticated(true);
+    navigate('/'); // Redireciona para a página inicial após login bem-sucedido
   };
 
-  const handleLogout = async () => {
-    
+  const handleLogout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
     navigate('/login'); // Redireciona para a página de login
@@ -91,11 +67,7 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
         path="/" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout 
-            isSidebarOpen={isSidebarOpen} 
-            onToggle={toggleSidebar}
-            onLogout={handleLogout}
-            >
+            <DashboardLayout onLogout={handleLogout}>
               <Home />
             </DashboardLayout>
           </ProtectedRoute>
@@ -105,9 +77,7 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
         path="/reports" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout isSidebarOpen={isSidebarOpen} onToggle={toggleSidebar}
-            onLogout={handleLogout} // Não esqueça aqui também
-            >
+            <DashboardLayout onLogout={handleLogout}>
               <Reports />
             </DashboardLayout>
           </ProtectedRoute>
@@ -117,9 +87,7 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
         path="/settings" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout isSidebarOpen={isSidebarOpen} onToggle={toggleSidebar}
-            onLogout={handleLogout} // Não esqueça aqui também
-            >
+            <DashboardLayout onLogout={handleLogout}>
               <Settings />
             </DashboardLayout>
           </ProtectedRoute>
@@ -131,26 +99,18 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
         path="/escolas" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout 
-              isSidebarOpen={isSidebarOpen} 
-              onToggle={toggleSidebar} 
-              onLogout={handleLogout}
-            >
-              <Escolas /> {/* Página de Escolas */}
+            <DashboardLayout onLogout={handleLogout}>
+              <Escolas />
             </DashboardLayout>
           </ProtectedRoute>
         } 
       />
 
-<Route 
+      <Route 
         path="/escolas/:id" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout 
-              isSidebarOpen={isSidebarOpen} 
-              onToggle={toggleSidebar} 
-              onLogout={handleLogout}
-            >
+            <DashboardLayout onLogout={handleLogout}>
               <DetalhesEscola />
             </DashboardLayout>
           </ProtectedRoute>
@@ -162,8 +122,6 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen, isAuthenticated, setIsAut
 }
 
 AppContent.propTypes = {
-  isSidebarOpen: PropTypes.bool.isRequired,
-  setIsSidebarOpen: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
 };
