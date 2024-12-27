@@ -1,16 +1,24 @@
 // src/components/Layout/Header.jsx
-import  { useState } from 'react';
-import PropTypes from 'prop-types';
-import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Tooltip } from '@mui/material';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useTheme, useMediaQuery } from '@mui/material';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useTheme, useMediaQuery } from "@mui/material";
 
-const Header = ({ onLogout, handleDrawerToggle }) => {
+const Header = ({ onLogout, handleDrawerToggle, handleDesktopToggle }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleUserMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,8 +29,12 @@ const Header = ({ onLogout, handleDrawerToggle }) => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar
+      position="fixed"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar>
+        {/* Botão de Toggle para Mobile */}
         {isMobile && (
           <IconButton
             color="inherit"
@@ -34,8 +46,21 @@ const Header = ({ onLogout, handleDrawerToggle }) => {
             <MenuIcon />
           </IconButton>
         )}
+        {/* Botão de Toggle para Desktop */}
+        {!isMobile && (
+          <IconButton
+            color="inherit"
+            aria-label="toggle sidebar"
+            edge="start"
+            onClick={handleDesktopToggle}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          Meu Dashboard
+          Caixa Escolar
         </Typography>
         <Tooltip title="Notificações">
           <IconButton color="inherit">
@@ -43,10 +68,7 @@ const Header = ({ onLogout, handleDrawerToggle }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Configurações de Conta">
-          <IconButton
-            color="inherit"
-            onClick={handleUserMenuOpen}
-          >
+          <IconButton color="inherit" onClick={handleUserMenuOpen}>
             <AccountCircle />
           </IconButton>
         </Tooltip>
@@ -55,17 +77,24 @@ const Header = ({ onLogout, handleDrawerToggle }) => {
           open={Boolean(anchorEl)}
           onClose={handleUserMenuClose}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
         >
           <MenuItem onClick={handleUserMenuClose}>Meu Perfil</MenuItem>
           <MenuItem onClick={handleUserMenuClose}>Configurações</MenuItem>
-          <MenuItem onClick={() => { handleUserMenuClose(); onLogout(); }}>Terminar Sessão</MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleUserMenuClose();
+              onLogout();
+            }}
+          >
+            Terminar Sessão
+          </MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
@@ -75,6 +104,7 @@ const Header = ({ onLogout, handleDrawerToggle }) => {
 Header.propTypes = {
   onLogout: PropTypes.func.isRequired,
   handleDrawerToggle: PropTypes.func.isRequired,
+  handleDesktopToggle: PropTypes.func.isRequired,
 };
 
 export default Header;

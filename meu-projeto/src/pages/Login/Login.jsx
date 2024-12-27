@@ -44,12 +44,13 @@ const Form = styled("form")(({ theme }) => ({
 const SubmitButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(3),
   height: "36px",
-  backgroundColor: theme.palette.primary.main, // Define a cor de fundo como a cor primária principal
-  color: theme.palette.primary.contrastText, // Define a cor do texto com base no contraste da cor primária
+  backgroundColor: `${theme.palette.primary.main} !important`,
+  color: `${theme.palette.primary.contrastText} !important`,
   "&:hover": {
-    backgroundColor: theme.palette.primary.dark, // Define a cor de fundo ao passar o mouse
+    backgroundColor: `${theme.palette.primary.dark} !important`,
   },
 }));
+
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -132,7 +133,6 @@ const Login = ({ onLogin }) => {
           <SubmitButton
             type="submit"
             variant="contained"
-            color="primary"
             fullWidth
             disabled={loading}
           >

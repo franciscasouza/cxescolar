@@ -1,26 +1,36 @@
 // src/components/Layout/Sidebar.jsx
-import 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar, Divider, Tooltip, Typography } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
-import SchoolIcon from '@mui/icons-material/School';
-import PropTypes from 'prop-types';
-import { NavLink, useLocation } from 'react-router-dom';
-import { useTheme, useMediaQuery } from '@mui/material';
+import "react";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Divider,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SchoolIcon from "@mui/icons-material/School";
+import PropTypes from "prop-types";
+import { NavLink, useLocation } from "react-router-dom";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 const drawerWidth = 240;
 
-const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
+const Sidebar = ({ mobileOpen, handleDrawerToggle, desktopOpen }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Declarado e usado
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
 
   const navItems = [
-    { text: 'Home', icon: <DashboardIcon />, path: '/' },
-    { text: 'Reports', icon: <BarChartIcon />, path: '/reports' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
-    { text: 'Escolas', icon: <SchoolIcon />, path: '/escolas' },
+    { text: "Home", icon: <DashboardIcon />, path: "/" },
+    { text: "Reports", icon: <BarChartIcon />, path: "/reports" },
+    { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
+    { text: "Escolas", icon: <SchoolIcon />, path: "/escolas" },
   ];
 
   const drawerContent = (
@@ -34,20 +44,20 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
       <List>
         {navItems.map((item) => (
           <Tooltip key={item.text} title={item.text} placement="right">
-            <ListItem 
-              button 
-              component={NavLink} 
+            <ListItem
+              button
+              component={NavLink}
               to={item.path}
               selected={location.pathname === item.path}
               sx={{
-                '&.active': {
-                  backgroundColor: 'action.selected',
-                  '& .MuiListItemIcon-root': {
-                    color: 'primary.main',
+                "&.active": {
+                  backgroundColor: "action.selected",
+                  "& .MuiListItemIcon-root": {
+                    color: "primary.main",
                   },
                 },
               }}
-              onClick={isMobile ? handleDrawerToggle : undefined} // Uso de isMobile
+              onClick={isMobile ? handleDrawerToggle : undefined} // Toggle apenas no mobile
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -69,20 +79,20 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
           keepMounted: true, // Melhor performance em mobile
         }}
         sx={{
-          display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
         }}
       >
         {drawerContent}
       </Drawer>
-      {/* Drawer Permanente para Desktop */}
+      {/* Drawer Persistente para Desktop */}
       <Drawer
-        variant="permanent"
+        variant="persistent"
+        open={desktopOpen}
         sx={{
-          display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          display: { xs: "none", sm: "block" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
         }}
-        open
       >
         {drawerContent}
       </Drawer>
@@ -93,6 +103,8 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
 Sidebar.propTypes = {
   mobileOpen: PropTypes.bool.isRequired,
   handleDrawerToggle: PropTypes.func.isRequired,
+  desktopOpen: PropTypes.bool.isRequired,
+  handleDesktopToggle: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
