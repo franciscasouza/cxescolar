@@ -11,7 +11,7 @@
 }
 
 .tabela-escolas thead {
-  background: var(--first-color-dark);
+  background: #08325e;
   color: white;
   cursor: pointer;
 }
@@ -20,17 +20,17 @@
 .tabela-escolas td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid var(--c-gray-light);
+  border-bottom: 1px solid #f2f2f2;
 }
 
 .tabela-escolas tbody tr:hover {
-  background: var(--c-blue-10); /* Destaque ao passar o mouse */
+  background: rgba(56, 135, 219, 0.1); /* Destaque ao passar o mouse */
 }
 
 .no-data {
   text-align: center;
   font-style: italic;
-  color: var(--text-color-light);
+  color: #636363;
 }
 
 .acoes button {
@@ -43,20 +43,18 @@
 }
 
 .btn-detalhes {
-  background-color: var(--first-color-light);
+  background-color: #3987db;
   color: white;
 }
-
 .btn-detalhes:hover {
-  background-color: var(--first-color);
+  background-color: #075aa9;
 }
 
 .btn-editar {
-  background-color: var(--c-warning);
+  background-color: #da9b22;
   color: white;
 }
 
 .btn-editar:hover {
-  background-color: var(--c-danger-dark);
+  background-color: #870000;
 }
-

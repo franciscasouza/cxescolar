@@ -17,14 +17,14 @@
 
 .filtros input {
   padding: 10px;
-  border: 1px solid var(--c-gray);
+  border: 1px solid #cccccc;
   border-radius: 4px;
   font-size: 1rem;
 }
 
 .filtros button {
   padding: 10px 20px;
-  background: var(--first-color);
+  background: #3987db;
   color: white;
   border: none;
   border-radius: 4px;
@@ -32,7 +32,7 @@
 }
 
 .filtros button:hover {
-  background: var(--first-color-light);
+  background: #075aa9;
 }
 
 .pagination {
@@ -46,14 +46,18 @@
 .pagination button {
   padding: 8px 12px;
   border: none;
-  background: var(--first-color-light);
+  background: #3987db;
   color: white;
   cursor: pointer;
   border-radius: 4px;
 }
 
+.pagination button:hover {
+  background: #075aa9;
+}
+
 .pagination button[disabled] {
-  background: var(--c-gray-light);
+  background: #f2f2f2;
   cursor: not-allowed;
 }
 

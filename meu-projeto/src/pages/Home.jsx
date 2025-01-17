@@ -6,7 +6,7 @@ import {
   Typography,
   IconButton,
   Tooltip,
-  CircularProgress,
+  Skeleton,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CardItem from "../components/HomeComponents/CardItem";
@@ -29,26 +29,40 @@ const Home = () => {
     message: "",
   });
 
+  // Configurando a base URL para o axios
+  axios.defaults.baseURL = "https://api.seusite.com";
+
+  const fetchAPI = async (url) => {
+    try {
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Erro ao carregar dados"
+      );
+    }
+  };
+
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Substitua pelas URLs reais das suas APIs
-      const cardsResponse = await axios.get("https://api.seusite.com/cards");
-      const lineResponse = await axios.get("https://api.seusite.com/line-data");
-      const barResponse = await axios.get("https://api.seusite.com/bar-data");
-      const pieResponse = await axios.get("https://api.seusite.com/pie-data");
-
-      setCards(cardsResponse.data);
-      setLineData(lineResponse.data);
-      setBarData(barResponse.data);
-      setPieData(pieResponse.data);
+      const [cards, line, bar, pie] = await Promise.all([
+        fetchAPI("/cards"),
+        fetchAPI("/line-data"),
+        fetchAPI("/bar-data"),
+        fetchAPI("/pie-data"),
+      ]);
+      setCards(cards);
+      setLineData(line);
+      setBarData(bar);
+      setPieData(pie);
       setSnackbar({
         open: true,
         severity: "success",
         message: "Dados atualizados com sucesso!",
       });
     } catch (error) {
-      console.error("Erro ao buscar os dados:", error);
+      console.error("Erro ao buscar os dados:", error.message);
       setSnackbar({
         open: true,
         severity: "error",
@@ -66,21 +80,6 @@ const Home = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   return (
     <Box
       sx={{
@@ -92,6 +91,7 @@ const Home = () => {
         boxSizing: "border-box",
       }}
     >
+      {/* Título e botão de atualização */}
       <Box
         sx={{
           display: "flex",
@@ -109,37 +109,54 @@ const Home = () => {
           </IconButton>
         </Tooltip>
       </Box>
+
+      {/* Grid principal */}
       <Grid container spacing={2} sx={{ flexGrow: 1, overflow: "auto" }}>
-        {/* Renderizando os Cards */}
-        {cards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <CardItem
-              title={card.title}
-              description={card.description}
-              image={card.image}
-            />
-          </Grid>
-        ))}
+        {/* Renderizando os Cards ou Skeletons */}
+        {loading
+          ? Array.from(new Array(6)).map((_, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Skeleton variant="rectangular" width="100%" height={150} />
+              </Grid>
+            ))
+          : cards.map((card, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <CardItem
+                  title={card.title}
+                  description={card.description}
+                  image={card.image || "url/to/default/image.jpg"}
+                />
+              </Grid>
+            ))}
 
         {/* Botão Animado para Ação Especial */}
-        <Grid item xs={12}>
-          <AnimatedButton variant="contained" color="secondary" fullWidth>
-            Ação Especial
-          </AnimatedButton>
-        </Grid>
+        {!loading && (
+          <Grid item xs={12}>
+            <AnimatedButton variant="contained" color="secondary" fullWidth>
+              Ação Especial
+            </AnimatedButton>
+          </Grid>
+        )}
 
         {/* Renderizando os Gráficos */}
-        {/* <Grid item xs={12} md={6}>
-          <LineChartComponent data={lineData} title="Vendas Mensais" />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <BarChartComponent data={barData} title="Vendas por Produto" />
-        </Grid> */}
-        {/* <Grid item xs={12} md={6}>
-          <PieChartComponent data={pieData} title="Distribuição de Grupos" />
-        </Grid> */}
-        {/* Adicione mais gráficos conforme necessário */}
+        {!loading && (
+          <>
+            <Grid item xs={12} md={6}>
+              <LineChartComponent data={lineData} title="Vendas Mensais" />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <BarChartComponent data={barData} title="Vendas por Produto" />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PieChartComponent
+                data={pieData}
+                title="Distribuição de Grupos"
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
+
       {/* Snackbar de Notificação */}
       <NotificationSnackbar
         open={snackbar.open}

@@ -7,17 +7,20 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
+        position: "fixed", // Fixar no final da página
+        bottom: 0, // Alinhar no final
+        left: 0,
+        width: "100%",
         py: 2,
         px: 2,
-        mt: "auto", // Empurra o Footer para o final do flex container
-        width: "100%",
         backgroundColor: (theme) =>
           theme.palette.mode === "light"
             ? theme.palette.grey[200]
             : theme.palette.grey[800],
+        textAlign: "center",
       }}
     >
-      <Typography variant="body2" color="text.secondary" align="center">
+      <Typography variant="body2" color="text.secondary">
         © {new Date().getFullYear()} Desenvolvido por Secretaria Municipal de
         Tecnologia e Inovação. Todos os direitos reservados.
       </Typography>
