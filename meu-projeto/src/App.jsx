@@ -16,7 +16,8 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import Escolas from "./pages/EscolaPages/EscolasPages";
 import DetalhesEscola from "./pages/EscolaPages/DetalhesEscola";
-
+import Tipologias from "./components/Tipologias/Tipologias";
+import TipologiaFormPage from "./pages/Tipologia/TipologiaFormPage"; // Novo componente para criação/edição
 function ProtectedRoute({ isAuthenticated, children }) {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -75,6 +76,36 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <DashboardLayout onLogout={handleLogout}>
               <Home />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tipologias"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <Tipologias />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tipologias/new"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <TipologiaFormPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tipologias/edit/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <TipologiaFormPage />
             </DashboardLayout>
           </ProtectedRoute>
         }

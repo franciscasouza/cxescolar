@@ -30,7 +30,7 @@ const Home = () => {
   });
 
   // Configurando a base URL para o axios
-  axios.defaults.baseURL = "https://api.seusite.com";
+  axios.defaults.baseURL = "https://localhost:7165";
 
   const fetchAPI = async (url) => {
     try {
