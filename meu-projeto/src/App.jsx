@@ -18,6 +18,7 @@ import Escolas from "./pages/EscolaPages/EscolasPages";
 import DetalhesEscola from "./pages/EscolaPages/DetalhesEscola";
 import Tipologias from "./components/Tipologias/Tipologias";
 import TipologiaFormPage from "./pages/Tipologia/TipologiaFormPage"; // Novo componente para criação/edição
+import Fornecedores from "./components/Fornecedores/TabelaEscolas";
 function ProtectedRoute({ isAuthenticated, children }) {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -86,6 +87,16 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <DashboardLayout onLogout={handleLogout}>
               <Tipologias />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="=/fornecedores"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <Fornecedores />
             </DashboardLayout>
           </ProtectedRoute>
         }

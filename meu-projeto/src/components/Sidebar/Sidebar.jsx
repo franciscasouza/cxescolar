@@ -16,6 +16,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SchoolIcon from "@mui/icons-material/School";
 import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PropTypes from "prop-types";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
@@ -30,6 +31,11 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle, desktopOpen }) => {
   const navItems = [
     { text: "Home", icon: <DashboardIcon />, path: "/" },
     { text: "Tipologias", icon: <CenterFocusWeakIcon />, path: "/tipologias" },
+    {
+      text: "Fornecedores",
+      icon: <PeopleAltOutlinedIcon />,
+      path: "/fornecedores",
+    },
     { text: "Reports", icon: <BarChartIcon />, path: "/reports" },
     { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
     { text: "Escolas", icon: <SchoolIcon />, path: "/escolas" },

@@ -78,12 +78,14 @@ const Tipologias = () => {
       >
         Nova Tipologia
       </button>
-      <table className="tabela-escolas">
+      <table className="tabela-escolas" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
             <th>Classificação</th>
             <th>Data de Criação</th>
             <th>Valor do Aporte</th>
+            <th>Indice de Correção</th>
+            <th>Indice de Repasse</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -92,7 +94,24 @@ const Tipologias = () => {
             <tr key={tipologia.id}>
               <td>{tipologia.classificacao}</td>
               <td>{new Date(tipologia.dataCriacao).toLocaleDateString()}</td>
-              <td>{tipologia.valorAporte}</td>
+              <td>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(tipologia.valorAporte)}
+              </td>
+              <td>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(tipologia.indiceCorrecao)}
+              </td>
+              <td>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(tipologia.indiceRepasse)}
+              </td>
               <td>
                 <button
                   className="btn-editar"
@@ -127,7 +146,7 @@ const Tipologias = () => {
               padding: "20px",
               borderRadius: "8px",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "400px",
+              width: "600px",
               maxWidth: "90%",
             }}
           >

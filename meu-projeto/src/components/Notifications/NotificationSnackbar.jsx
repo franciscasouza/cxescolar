@@ -1,17 +1,17 @@
 // src/components/Notifications/NotificationSnackbar.jsx
-import React from 'react';
-import { Snackbar, Alert } from '@mui/material';
-import PropTypes from 'prop-types';
+
+import { Snackbar, Alert } from "@mui/material";
+import PropTypes from "prop-types";
 
 const NotificationSnackbar = ({ open, handleClose, severity, message }) => {
   return (
-    <Snackbar 
-      open={open} 
-      autoHideDuration={6000} 
+    <Snackbar
+      open={open}
+      autoHideDuration={6000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
     >
-      <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+      <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
         {message}
       </Alert>
     </Snackbar>
@@ -21,7 +21,7 @@ const NotificationSnackbar = ({ open, handleClose, severity, message }) => {
 NotificationSnackbar.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  severity: PropTypes.oneOf(['success', 'error', 'warning', 'info']).isRequired,
+  severity: PropTypes.oneOf(["success", "error", "warning", "info"]).isRequired,
   message: PropTypes.string.isRequired,
 };
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import "./Form.css";
 
 const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -58,74 +59,86 @@ const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
       indiceCorrecao: parseFloat(formData.indiceCorrecao),
       indiceRepasse: parseFloat(formData.indiceRepasse),
     });
+
+    // Fecha o modal
+    onCancel();
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          Classificação:
-          <input
-            type="text"
-            name="classificacao"
-            value={formData.classificacao}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Data de Criação:
-          <input
-            type="datetime-local"
-            name="dataCriacao"
-            value={formData.dataCriacao.slice(0, 16)} // Formata para o input datetime-local
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Valor do Aporte:
-          <input
-            type="number"
-            name="valorAporte"
-            value={formData.valorAporte}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Índice de Correção:
-          <input
-            type="number"
-            name="indiceCorrecao"
-            value={formData.indiceCorrecao}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Índice de Repasse:
-          <input
-            type="number"
-            name="indiceRepasse"
-            value={formData.indiceRepasse}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <button type="submit">Salvar</button>
-        <button type="button" onClick={onCancel}>
-          Cancelar
-        </button>
+      <div className="form-container">
+        <div className="form-group">
+          <label>
+            Classificação:
+            <input
+              type="text"
+              name="classificacao"
+              value={formData.classificacao}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+
+        <div className="form-group">
+          <label>
+            Data de Criação:
+            <input
+              type="datetime-local"
+              name="dataCriacao"
+              value={formData.dataCriacao.slice(0, 16)} // Formata para o input datetime-local
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Valor do Aporte:
+            <input
+              type="number"
+              name="valorAporte"
+              value={formData.valorAporte}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Índice de Correção:
+            <input
+              type="number"
+              name="indiceCorrecao"
+              value={formData.indiceCorrecao}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Índice de Repasse:
+            <input
+              type="number"
+              name="indiceRepasse"
+              value={formData.indiceRepasse}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div className="form-actions">
+          <button type="submit" className="btn btn-primary">
+            Salvar
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn btn-secondary"
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </form>
   );
