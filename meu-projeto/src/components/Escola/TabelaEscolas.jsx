@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import './TabelaEscolas.css';
+import PropTypes from "prop-types";
+import "./TabelaEscolas.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -41,13 +41,19 @@ function TabelaEscolas({ escolas, onEdit }) {
         <thead>
           <tr>
             <th onClick={() => handleSort("nome")}>
-              Nome {sortConfig?.key === "nome" && (sortConfig.direction === "ascending" ? "↑" : "↓")}
+              Nome{" "}
+              {sortConfig?.key === "nome" &&
+                (sortConfig.direction === "ascending" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("regiao")}>
-              Região {sortConfig?.key === "regiao" && (sortConfig.direction === "ascending" ? "↑" : "↓")}
+              Região{" "}
+              {sortConfig?.key === "regiao" &&
+                (sortConfig.direction === "ascending" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("classificacao")}>
-              Classificação {sortConfig?.key === "classificacao" && (sortConfig.direction === "ascending" ? "↑" : "↓")}
+              Classificação{" "}
+              {sortConfig?.key === "classificacao" &&
+                (sortConfig.direction === "ascending" ? "↑" : "↓")}
             </th>
             <th>Ações</th>
           </tr>
@@ -72,10 +78,7 @@ function TabelaEscolas({ escolas, onEdit }) {
                   >
                     Detalhes
                   </button>
-                  <button
-                    className="btn-editar"
-                    onClick={() => onEdit(escola)}
-                  >
+                  <button className="btn-editar" onClick={() => onEdit(escola)}>
                     Editar
                   </button>
                 </td>

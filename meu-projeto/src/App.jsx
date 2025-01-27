@@ -18,7 +18,8 @@ import Escolas from "./pages/EscolaPages/EscolasPages";
 import DetalhesEscola from "./pages/EscolaPages/DetalhesEscola";
 import Tipologias from "./components/Tipologias/Tipologias";
 import TipologiaFormPage from "./pages/Tipologia/TipologiaFormPage"; // Novo componente para criação/edição
-import Fornecedores from "./components/Fornecedores/TabelaEscolas";
+import Fornecedores from "./components/Fornecedores/Fornecedores";
+import FornecedorFormPage from "./pages/ForncedoresPage/FornecedorFormPage";
 function ProtectedRoute({ isAuthenticated, children }) {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -92,16 +93,6 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
         }
       />
       <Route
-        path="=/fornecedores"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Fornecedores />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="/tipologias/new"
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -117,6 +108,36 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <DashboardLayout onLogout={handleLogout}>
               <TipologiaFormPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/fornecedores"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <Fornecedores />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/fornecedores/new"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <FornecedorFormPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/fornecedores/edit/:id"
+        element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DashboardLayout onLogout={handleLogout}>
+              <FornecedorFormPage />
             </DashboardLayout>
           </ProtectedRoute>
         }
