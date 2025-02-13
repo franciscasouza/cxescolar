@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import "./Form.css";
 
 const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -66,8 +65,8 @@ const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-container">
-        <div className="form-group">
+      <div>
+        <div>
           <label>
             Classificação:
             <input
@@ -80,7 +79,7 @@ const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
           </label>
         </div>
 
-        <div className="form-group">
+        <div>
           <label>
             Data de Criação:
             <input
@@ -91,7 +90,7 @@ const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
             />
           </label>
         </div>
-        <div className="form-group">
+        <div>
           <label>
             Valor do Aporte:
             <input
@@ -103,7 +102,7 @@ const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
             />
           </label>
         </div>
-        <div className="form-group">
+        <div>
           <label>
             Índice de Correção:
             <input
@@ -115,7 +114,7 @@ const TipologiaForm = ({ tipologia, onSave, onCancel }) => {
             />
           </label>
         </div>
-        <div className="form-group">
+        <div>
           <label>
             Índice de Repasse:
             <input

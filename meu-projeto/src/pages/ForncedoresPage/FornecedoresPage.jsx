@@ -60,7 +60,7 @@ const FornecedoresForm = ({ fornecedor, onSave, onCancel }) => {
             type="text"
             name="CNPJ"
             className="input-field"
-            value={formData.CNPJ}
+            value={formData.cnpj}
             onChange={handleChange}
             required
           />
@@ -73,7 +73,7 @@ const FornecedoresForm = ({ fornecedor, onSave, onCancel }) => {
             type="text"
             name="Nome"
             className="input-field"
-            value={formData.Nome}
+            value={formData.nome}
             onChange={handleChange}
             required
           />
@@ -86,7 +86,7 @@ const FornecedoresForm = ({ fornecedor, onSave, onCancel }) => {
             type="text"
             name="Contato"
             className="input-field"
-            value={formData.Contato}
+            value={formData.contato}
             onChange={handleChange}
             required
           />
@@ -99,7 +99,7 @@ const FornecedoresForm = ({ fornecedor, onSave, onCancel }) => {
             type="text"
             name="Localizacao"
             className="input-field"
-            value={formData.Localizacao}
+            value={formData.localizacao}
             onChange={handleChange}
             required
           />
@@ -112,7 +112,7 @@ const FornecedoresForm = ({ fornecedor, onSave, onCancel }) => {
             type="text"
             name="Telefone"
             className="input-field"
-            value={formData.Telefone}
+            value={formData.telefone}
             onChange={handleChange}
             required
           />

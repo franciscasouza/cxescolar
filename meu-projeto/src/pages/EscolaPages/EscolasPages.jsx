@@ -43,8 +43,9 @@ function EscolasPages() {
       const response = await fetch("https://localhost:7165/api/Escolas");
       const data = await response.json();
 
-      const uniqueEscolas = Array.from(new Set(data.map((escola) => escola.id)))
-        .map((id) => data.find((escola) => escola.id === id));
+      const uniqueEscolas = Array.from(
+        new Set(data.map((escola) => escola.id))
+      ).map((id) => data.find((escola) => escola.id === id));
 
       setEscolas(uniqueEscolas);
       setFilteredEscolas(uniqueEscolas); // Inicializa a lista filtrada
@@ -133,7 +134,9 @@ function EscolasPages() {
             >
               Anterior
             </button>
-            <span>Página {currentPage} de {totalPages}</span>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(currentPage + 1)}
@@ -146,7 +149,13 @@ function EscolasPages() {
 
       {/* Modal */}
       {isModalOpen && (
-        <ModalEscola escola={selectedEscola} onClose={closeModal} />
+        <div>
+          <div>
+            <div className="modal-body">
+              <ModalEscola escola={selectedEscola} onClose={closeModal} />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

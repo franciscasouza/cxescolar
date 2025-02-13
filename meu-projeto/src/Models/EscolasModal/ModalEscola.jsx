@@ -1,6 +1,6 @@
-import  { useState } from "react";
-import PropTypes from 'prop-types';
-import './ModalEscola.css';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import "./ModalEscola.css";
 
 function ModalEscola({ escola, onClose }) {
   const [nome, setNome] = useState(escola ? escola.nome : "");
@@ -30,9 +30,12 @@ function ModalEscola({ escola, onClose }) {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>{escola ? "Editar Escola" : "Adicionar Escola"}</h2>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h2>{escola ? "Editar Escola" : "Adicionar Escola"}</h2>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nome</label>
@@ -61,19 +64,26 @@ function ModalEscola({ escola, onClose }) {
               required
             />
           </div>
-          <button type="submit">Salvar</button>
-          <button type="button" onClick={onClose}>
-            Cancelar
-          </button>
+          <div className="form-actions">
+            <button className="btn btn-primary" type="submit">
+              Salvar
+            </button>
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={onClose}
+            >
+              Cancelar
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
 ModalEscola.propTypes = {
-    escola: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
-   
+  escola: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ModalEscola;

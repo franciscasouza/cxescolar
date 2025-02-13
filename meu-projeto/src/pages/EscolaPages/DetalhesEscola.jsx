@@ -25,16 +25,18 @@ function DetalhesEscola() {
   }
 
   return (
-    <div className="detalhes-escola">
-      <div className="jumbotron">
-        <h1 className="display-4">{escola.nome}</h1>
-        <p className="lead">Região: {escola.regiao}</p>
-        <hr className="my-4" />
-        <p>Classificação: {escola.classificacao}</p>
-        <p>ID: {escola.id}</p>
-        <p>Outras informações relevantes podem ser exibidas aqui...</p>
+    <>
+      <div className="detalhes-escola">
+        <div className="jumbotron">
+          <h1 className="display-4">{escola.nome}</h1>
+          <p className="lead">Região: {escola.regiao}</p>
+          <hr className="my-4" />
+          <p>Classificação: {escola.classificacao}</p>
+          <p>ID: {escola.id}</p>
+          <p>Outras informações relevantes podem ser exibidas aqui...</p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

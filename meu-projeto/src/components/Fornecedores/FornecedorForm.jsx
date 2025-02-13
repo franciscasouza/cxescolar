@@ -1,34 +1,32 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "./Forms.css";
 
 const FornecedorForm = ({ fornecedor, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
-    CNPJ: "",
-    Nome: "",
-    Contato: "",
-    Localizacao: "",
-    Telefone: "",
+    cnpj: "",
+    nome: "",
+    contato: "",
+    localizacao: "",
+    telefone: "",
   });
 
   useEffect(() => {
     if (fornecedor) {
       setFormData({
-        id: fornecedor.id || null, // Garante que o ID é incluído
-        CNPJ: fornecedor.CNPJ || "",
-        Nome: fornecedor.Nome || "",
-        Contato: fornecedor.Contato || "",
-        Localizacao: fornecedor.Localizacao || "",
-        Telefone: fornecedor.Telefone || "",
+        cnpj: fornecedor.cnpj || "",
+        nome: fornecedor.nome || "",
+        contato: fornecedor.contato || "",
+        localizacao: fornecedor.localizacao || "",
+        telefone: fornecedor.telefone || "",
       });
     } else {
       setFormData({
-        id: null, // Reseta o ID para novo registro
-        CNPJ: "",
-        Nome: "",
-        Contato: "",
-        Localizacao: "",
-        Telefone: "",
+        cnpj: "",
+        nome: "",
+        contato: "",
+        localizacao: "",
+        telefone: "",
       });
     }
   }, [fornecedor]);
@@ -43,98 +41,75 @@ const FornecedorForm = ({ fornecedor, onSave, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validação básica
-    if (!formData.CNPJ || !formData.Nome) {
-      alert("Preencha os campos obrigatórios!");
-      return;
-    }
-
-    // Chama o método onSave passando os dados formatados
-    onSave({
-      ...formData,
-    });
-
-    // Fecha o modal
-    onCancel();
+    onSave(formData);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-container">
-        <div className="form-group">
-          <label>
-            CNPJ:
-            <input
-              type="text"
-              name="CNPJ"
-              value={formData.CNPJ}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-
-        <div className="form-group">
-          <label>
-            Nome:
-            <input
-              type="text"
-              name="Nome"
-              value={formData.Nome}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Contato:
-            <input
-              type="text"
-              name="Contato"
-              value={formData.Contato}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Localização:
-            <input
-              type="text"
-              name="Localizacao"
-              value={formData.Localizacao}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Telefone:
-            <input
-              type="text"
-              name="Telefone"
-              value={formData.Telefone}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="form-actions">
-          <button type="submit" className="btn btn-primary">
-            Salvar
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="btn btn-secondary"
-          >
-            Cancelar
-          </button>
-        </div>
+      <div>
+        <label>
+          CNPJ:
+          <input
+            type="text"
+            name="cnpj"
+            value={formData.cnpj}
+            onChange={handleChange}
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Nome:
+          <input
+            type="text"
+            name="nome"
+            value={formData.nome}
+            onChange={handleChange}
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Contato:
+          <input
+            type="text"
+            name="contato"
+            value={formData.contato}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Localização:
+          <input
+            type="text"
+            name="localizacao"
+            value={formData.localizacao}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Telefone:
+          <input
+            type="text"
+            name="telefone"
+            value={formData.telefone}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      <div className="form-actions">
+        <button className="btn btn-primary" type="submit">
+          Salvar
+        </button>
+        <button className="btn btn-secondary" type="button" onClick={onCancel}>
+          Cancelar
+        </button>
       </div>
     </form>
   );
@@ -142,19 +117,14 @@ const FornecedorForm = ({ fornecedor, onSave, onCancel }) => {
 
 FornecedorForm.propTypes = {
   fornecedor: PropTypes.shape({
-    id: PropTypes.number,
-    CNPJ: PropTypes.string,
-    Nome: PropTypes.string,
-    Contato: PropTypes.string,
-    Localizacao: PropTypes.string,
-    Telefone: PropTypes.string,
+    cnpj: PropTypes.string,
+    nome: PropTypes.string,
+    contato: PropTypes.string,
+    localizacao: PropTypes.string,
+    telefone: PropTypes.string,
   }),
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-};
-
-FornecedorForm.defaultProps = {
-  fornecedor: null,
 };
 
 export default FornecedorForm;

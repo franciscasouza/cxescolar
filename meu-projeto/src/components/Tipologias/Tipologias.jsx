@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import TipologiaForm from "../../components/Tipologias/TipologiaForm";
+import "./Form.css";
 
 const Tipologias = () => {
   const [tipologias, setTipologias] = useState([]);
@@ -126,36 +127,23 @@ const Tipologias = () => {
       </table>
 
       {showModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "600px",
-              maxWidth: "90%",
-            }}
-          >
-            <h2>{selectedTipologia ? "Editar Tipologia" : "Nova Tipologia"}</h2>
-            <TipologiaForm
-              tipologia={selectedTipologia}
-              onSave={handleSave}
-              onCancel={handleCancel}
-            />
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h2>
+                {selectedTipologia ? "Editar Tipologia" : "Nova Tipologia"}
+              </h2>
+              <button className="modal-close" onClick={handleCancel}>
+                &times;
+              </button>
+            </div>
+            <div className="modal-body">
+              <TipologiaForm
+                tipologia={selectedTipologia}
+                onSave={handleSave}
+                onCancel={handleCancel}
+              />
+            </div>
           </div>
         </div>
       )}
