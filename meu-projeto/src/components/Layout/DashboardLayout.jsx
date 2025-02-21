@@ -1,17 +1,33 @@
-// src/components/Layout/DashboardLayout.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Box, Toolbar, IconButton, AppBar, Typography } from "@mui/material";
+import { 
+  Box, 
+  Toolbar, 
+  IconButton, 
+  AppBar, 
+  Typography, 
+  useMediaQuery, 
+  useTheme 
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Sidebar from "../Sidebar/Sidebar"; // Ajuste o caminho conforme a estrutura do seu projeto
-import Footer from "../Footer/Footer"; // Assegure-se de que o Footer está corretamente importado
-import Header from "../Header/Header"; // Assegure-se de que o Header está corretamente importado
-
-const drawerWidth = 240;
+import CloseIcon from "@mui/icons-material/Close";
+import Sidebar from "../Sidebar/Sidebar";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
 
 const DashboardLayout = ({ children, onLogout }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [desktopOpen, setDesktopOpen] = useState(true); // Sidebar aberto inicialmente no desktop
+  const [desktopOpen, setDesktopOpen] = useState(!isMobile);
+
+  // Adjust sidebar based on screen size
+  useEffect(() => {
+    setDesktopOpen(!isMobile);
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  }, [isMobile]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -21,85 +37,70 @@ const DashboardLayout = ({ children, onLogout }) => {
     setDesktopOpen(!desktopOpen);
   };
 
+  const drawerWidth = isMobile ? '100%' : 240;
+
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      {/* Sidebar */}
+    <Box 
+      sx={{ 
+        display: "flex", 
+        minHeight: "100vh",
+        flexDirection: "column"
+      }}
+    >
+      {/* Responsive Sidebar */}
       <Sidebar
         mobileOpen={mobileOpen}
         handleDrawerToggle={handleDrawerToggle}
         desktopOpen={desktopOpen}
         handleDesktopToggle={handleDesktopToggle}
+        isMobile={isMobile}
+        drawerWidth={drawerWidth}
       />
 
-      {/* Header */}
+      {/* Responsive Header */}
       <Header
         onLogout={onLogout}
         handleDrawerToggle={handleDrawerToggle}
         handleDesktopToggle={handleDesktopToggle}
+        isMobile={isMobile}
+        desktopOpen={desktopOpen}
+        drawerWidth={drawerWidth}
       />
 
-      {/* AppBar */}
-      <AppBar
-        component="fixed"
-        sx={{
-          flexGrow: 1,
-          display: { sm: "flex" },
-          width: { sm: `calc(100% - ${desktopOpen ? drawerWidth : 0}px)` },
-          ml: { sm: `${desktopOpen ? drawerWidth : 0}px` },
-          transition: (theme) =>
-            theme.transitions.create(["width", "margin"], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-        }}
-      >
-        <Toolbar>
-          {/* Botão para togglear Sidebar no desktop */}
-          <IconButton
-            color="inherit"
-            aria-label="toggle sidebar"
-            edge="start"
-            onClick={handleDesktopToggle}
-            sx={{ mr: 2, display: { sm: "block" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Dashboard
-          </Typography>
-          {/* Outros elementos do AppBar podem ser adicionados aqui */}
-          <Box sx={{ flexGrow: 1 }} />
-          <Typography
-            variant="body1"
-            onClick={onLogout}
-            sx={{ cursor: "pointer" }}
-          >
-            Sair
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      {/* Conteúdo Principal */}
+      {/* Main Content Area */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          overflow: "auto",
-          width: { sm: `calc(100% - ${desktopOpen ? drawerWidth : 0}px)` },
-          transition: (theme) =>
-            theme.transitions.create(["width", "margin"], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-          marginLeft: { sm: `${desktopOpen ? drawerWidth : 0}px` },
+          width: { 
+            xs: '100%', 
+            md: `calc(100% - ${desktopOpen ? drawerWidth : 0}px)` 
+          },
+          marginLeft: { 
+            xs: 0, 
+            md: `${desktopOpen ? drawerWidth : 0}px` 
+          },
+          padding: theme => theme.spacing(3),
+          transition: theme => theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
         }}
       >
-        <Toolbar /> {/* Espaçamento para o Header */}
-        <Box sx={{ flexGrow: 1 }}>
-          {children} {/* Conteúdo da Página */}
+        <Toolbar /> {/* Spacing for AppBar */}
+        
+        <Box 
+          sx={{ 
+            width: '100%', 
+            maxWidth: 1200,
+            margin: '0 auto',
+            padding: theme => theme.spacing(2)
+          }}
+        >
+          {children}
         </Box>
-        <Footer /> {/* Footer Fixo no Final */}
+        
+        <Footer />
       </Box>
     </Box>
   );

@@ -1,118 +1,105 @@
-// src/components/Layout/Sidebar.jsx
-import "react";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Divider,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import { Drawer, Box, List, ListItem, ListItemIcon, ListItemText, useTheme, useMediaQuery } from "@mui/material";
+import { Link } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import ReportIcon from "@mui/icons-material/Report";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SchoolIcon from "@mui/icons-material/School";
-import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import PropTypes from "prop-types";
-import { NavLink, useLocation } from "react-router-dom";
-import { useTheme, useMediaQuery } from "@mui/material";
+import CategoryIcon from "@mui/icons-material/Category";
 
-const drawerWidth = 240;
+const sidebarItems = [
+  { text: "Home", icon: <HomeIcon />, path: "/" },
+  { text: "Escolas", icon: <SchoolIcon />, path: "/escolas" },
+  { text: "Tipologias", icon: <CategoryIcon />, path: "/tipologias" },
+  { text: "Relatórios", icon: <ReportIcon />, path: "/relatorios" },
+  { text: "Configurações", icon: <SettingsIcon />, path: "/configuracoes" },
+];
 
-const Sidebar = ({ mobileOpen, handleDrawerToggle, desktopOpen }) => {
+const Sidebar = ({ 
+  mobileOpen, 
+  handleDrawerToggle, 
+  desktopOpen, 
+  handleDesktopToggle, 
+  isMobile,
+  drawerWidth 
+}) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const location = useLocation();
 
-  const navItems = [
-    { text: "Home", icon: <DashboardIcon />, path: "/" },
-    { text: "Tipologias", icon: <CenterFocusWeakIcon />, path: "/tipologias" },
-    {
-      text: "Fornecedores",
-      icon: <PeopleAltOutlinedIcon />,
-      path: "/fornecedores",
-    },
-    { text: "Reports", icon: <BarChartIcon />, path: "/reports" },
-    { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
-    { text: "Escolas", icon: <SchoolIcon />, path: "/escolas" },
-  ];
-
-  const drawerContent = (
-    <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          Caixa Escolar
-        </Typography>
-      </Toolbar>
-      <Divider />
+  const renderSidebarContent = () => (
+    <Box 
+      sx={{ 
+        width: drawerWidth, 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column' 
+      }}
+    >
       <List>
-        {navItems.map((item) => (
-          <Tooltip key={item.text} title={item.text} placement="right">
-            <ListItem
-              button
-              component={NavLink}
-              to={item.path}
-              selected={location.pathname === item.path}
-              sx={{
-                "&.active": {
-                  backgroundColor: "action.selected",
-                  "& .MuiListItemIcon-root": {
-                    color: "primary.main",
-                  },
-                },
-              }}
-              onClick={isMobile ? handleDrawerToggle : undefined} // Toggle apenas no mobile
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          </Tooltip>
+        {sidebarItems.map((item) => (
+          <ListItem 
+            key={item.text} 
+            component={Link} 
+            to={item.path}
+            onClick={isMobile ? handleDrawerToggle : undefined}
+            sx={{
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+              },
+              borderRadius: 2,
+              margin: 1,
+            }}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
         ))}
       </List>
-    </div>
+    </Box>
   );
 
   return (
     <>
-      {/* Drawer Temporário para Mobile */}
-      <Drawer
-        variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Melhor performance em mobile
-        }}
-        sx={{
-          display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
-        }}
-      >
-        {drawerContent}
-      </Drawer>
-      {/* Drawer Persistente para Desktop */}
-      <Drawer
-        variant="persistent"
-        open={desktopOpen}
-        sx={{
-          display: { xs: "none", sm: "block" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
-        }}
-      >
-        {drawerContent}
-      </Drawer>
+      {/* Mobile Drawer */}
+      {isMobile && (
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth 
+            },
+          }}
+        >
+          {renderSidebarContent()}
+        </Drawer>
+      )}
+
+      {/* Desktop Drawer */}
+      {!isMobile && (
+        <Drawer
+          variant="persistent"
+          anchor="left"
+          open={desktopOpen}
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              position: 'relative',
+            },
+          }}
+        >
+          {renderSidebarContent()}
+        </Drawer>
+      )}
     </>
   );
-};
-
-Sidebar.propTypes = {
-  mobileOpen: PropTypes.bool.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
-  desktopOpen: PropTypes.bool.isRequired,
-  handleDesktopToggle: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

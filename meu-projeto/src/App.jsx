@@ -1,198 +1,52 @@
-// src/App.jsx
-import { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
-import PropTypes from "prop-types";
-import DashboardLayout from "./components/Layout/DashboardLayout";
-import AuthLayout from "./components/Layout/AuthLayout";
-import Home from "./pages/Home";
-import Login from "./pages/Login/Login";
-import Reports from "./pages/Reports";
-import Settings from "./pages/Settings";
-import Escolas from "./pages/EscolaPages/EscolasPages";
-import DetalhesEscola from "./pages/EscolaPages/DetalhesEscola";
-import Tipologias from "./components/Tipologias/Tipologias";
-import TipologiaFormPage from "./pages/Tipologia/TipologiaFormPage"; // Novo componente para criação/edição
-import Fornecedores from "./components/Fornecedores/Fornecedores";
-import FornecedorFormPage from "./pages/ForncedoresPage/FornecedorFormPage";
-function ProtectedRoute({ isAuthenticated, children }) {
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-}
+import { Suspense, lazy } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
-ProtectedRoute.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
-};
+import PrivateRoute from '@/components/PrivateRoute';
+import PublicRoute from '@/components/PublicRoute';
+
+// Lazy-loaded pages
+const Login = lazy(() => import('@/pages/Login'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Profile = lazy(() => import('@/pages/Profile'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   return (
-    <Router>
-      <AppContent
-        isAuthenticated={isAuthenticated}
-        setIsAuthenticated={setIsAuthenticated}
-      />
-    </Router>
+    <Suspense fallback={<CircularProgress />}>
+      <Routes>
+        <Route 
+          path="/login" 
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } 
+        />
+        
+        <Route 
+          path="/dashboard" 
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          } 
+        />
+        
+        <Route 
+          path="/profile" 
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          } 
+        />
+        
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 }
-
-function AppContent({ isAuthenticated, setIsAuthenticated }) {
-  const navigate = useNavigate();
-
-  const handleLogin = (username, password) => {
-    console.log("Login bem-sucedido para:", username); // Log de depuração
-    // Aqui você pode decodificar o token ou realizar outras operações com username e password
-    setIsAuthenticated(true);
-    navigate("/"); // Redireciona para a página inicial após login bem-sucedido
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    navigate("/login"); // Redireciona para a página de login
-  };
-
-  return (
-    <Routes>
-      <Route
-        path="/login"
-        element={
-          <AuthLayout>
-            <Login onLogin={handleLogin} />
-          </AuthLayout>
-        }
-      />
-
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Home />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/tipologias"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Tipologias />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/tipologias/new"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <TipologiaFormPage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/tipologias/edit/:id"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <TipologiaFormPage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/fornecedores"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Fornecedores />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/fornecedores/new"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <FornecedorFormPage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/fornecedores/edit/:id"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <FornecedorFormPage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/reports"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Reports />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/settings"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Settings />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Rota de Dashboard com Escolas */}
-      <Route
-        path="/escolas"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <Escolas />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/escolas/:id"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DashboardLayout onLogout={handleLogout}>
-              <DetalhesEscola />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  );
-}
-
-AppContent.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  setIsAuthenticated: PropTypes.func.isRequired,
-};
 
 export default App;

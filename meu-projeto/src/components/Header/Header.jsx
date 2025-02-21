@@ -1,44 +1,38 @@
-// src/components/Layout/Header.jsx
-import { useState } from "react";
-import PropTypes from "prop-types";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import { AppBar, Toolbar, IconButton, Typography, Box, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useTheme, useMediaQuery } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-const Header = ({ onLogout, handleDrawerToggle, handleDesktopToggle }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const handleUserMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleUserMenuClose = () => {
-    setAnchorEl(null);
-  };
-
+const Header = ({ 
+  onLogout, 
+  handleDrawerToggle, 
+  isMobile, 
+  desktopOpen, 
+  drawerWidth 
+}) => {
   return (
-    <AppBar
+    <AppBar 
       position="fixed"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{
+        width: { 
+          xs: '100%', 
+          md: `calc(100% - ${desktopOpen ? drawerWidth : 0}px)` 
+        },
+        marginLeft: { 
+          xs: 0, 
+          md: `${desktopOpen ? drawerWidth : 0}px` 
+        },
+        transition: (theme) => theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+      }}
     >
       <Toolbar>
-        {/* Botão de Toggle para Mobile */}
+        {/* Mobile Menu Toggle */}
         {isMobile && (
           <IconButton
             color="inherit"
-            aria-label="abrir drawer"
+            aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2 }}
@@ -46,65 +40,23 @@ const Header = ({ onLogout, handleDrawerToggle, handleDesktopToggle }) => {
             <MenuIcon />
           </IconButton>
         )}
-        {/* Botão de Toggle para Desktop */}
-        {!isMobile && (
-          <IconButton
-            color="inherit"
-            aria-label="toggle sidebar"
-            edge="start"
-            onClick={handleDesktopToggle}
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
 
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          Caixa Escolar
+          Dashboard
         </Typography>
-        <Tooltip title="Notificações">
-          <IconButton color="inherit">
-            <NotificationsIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Configurações de Conta">
-          <IconButton color="inherit" onClick={handleUserMenuOpen}>
-            <AccountCircle />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleUserMenuClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          <MenuItem onClick={handleUserMenuClose}>Meu Perfil</MenuItem>
-          <MenuItem onClick={handleUserMenuClose}>Configurações</MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleUserMenuClose();
-              onLogout();
-            }}
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Button 
+            color="inherit" 
+            startIcon={<LogoutIcon />} 
+            onClick={onLogout}
           >
-            Terminar Sessão
-          </MenuItem>
-        </Menu>
+            Sair
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );
-};
-
-Header.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
-  handleDesktopToggle: PropTypes.func.isRequired,
 };
 
 export default Header;
