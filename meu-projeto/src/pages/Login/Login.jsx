@@ -1,57 +1,70 @@
-import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { useNotification } from '../../hooks/useNotification';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Button, TextField, Container, Typography, Box } from "@mui/material";
 
-import { 
-  Button, 
-  TextField, 
-  Box, 
-  Typography, 
-  Container, 
-  Paper 
-} from '@mui/material';
-import NotificationSnackbar from '../../components/Notifications/NotificationSnackbar';
+import { login } from "@/store/slices/authSlice";
+import api from "@/services/api";
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  
-  const { login } = useAuth();
-  const { notification, showNotification, hideNotification } = useNotification();
+  // Troque o estado "email" por "username"
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    const success = login(username, password);
-    
-    if (!success) {
-      showNotification('Login failed. Please check your credentials.', 'error');
+    try {
+      // Envie "username" em vez de "email"
+      const response = await api.post("/login", { username, password });
+      dispatch(
+        login({
+          token: response.data.token,
+          user: response.data.user,
+        })
+      );
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login failed", error);
     }
   };
 
   return (
     <Container maxWidth="xs">
-      <Paper elevation={3} sx={{ padding: 3, marginTop: 8 }}>
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
+            // Altere o label para "Username"
             label="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            // Ajuste o autoComplete se necessário, por exemplo, "username"
+            autoComplete="username"
+            autoFocus
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            type="password"
             label="Password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
           <Button
             type="submit"
@@ -62,14 +75,7 @@ function Login() {
             Sign In
           </Button>
         </Box>
-      </Paper>
-      
-      <NotificationSnackbar
-        open={notification.open}
-        handleClose={hideNotification}
-        severity={notification.severity}
-        message={notification.message}
-      />
+      </Box>
     </Container>
   );
 }

@@ -1,61 +1,27 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { useLocation } from "react-router-dom";
 
-const Header = ({ 
-  onLogout, 
-  handleDrawerToggle, 
-  isMobile, 
-  desktopOpen, 
-  drawerWidth 
-}) => {
+const Header = ({ isOpen }) => {
+  const location = useLocation();
+
+  // Mapeamento de títulos dinâmicos
+  const pageTitles = {
+    "/": "Dashboard",
+    "/escolas": "Escolas",
+    "/tipologias": "Tipologias",
+    "/relatorios": "Relatórios",
+    "/configuracoes": "Configurações",
+  };
+
+  const title = pageTitles[location.pathname] || "Dashboard";
+
   return (
-    <AppBar 
-      position="fixed"
-      sx={{
-        width: { 
-          xs: '100%', 
-          md: `calc(100% - ${desktopOpen ? drawerWidth : 0}px)` 
-        },
-        marginLeft: { 
-          xs: 0, 
-          md: `${desktopOpen ? drawerWidth : 0}px` 
-        },
-        transition: (theme) => theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      }}
+    <header
+      className={`fixed top-0 h-16 bg-zinc-50  text-black
+      flex items-center px-6 shadow-sm transition-all duration-300
+      ${isOpen ? "w-[calc(100%-224px)] ml-56" : "w-[calc(100%-64px)] ml-16"}`}
     >
-      <Toolbar>
-        {/* Mobile Menu Toggle */}
-        {isMobile && (
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-
-        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          Dashboard
-        </Typography>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Button 
-            color="inherit" 
-            startIcon={<LogoutIcon />} 
-            onClick={onLogout}
-          >
-            Sair
-          </Button>
-        </Box>
-      </Toolbar>
-    </AppBar>
+      <h1 className="text-xl font-medium">{title}</h1>
+    </header>
   );
 };
 

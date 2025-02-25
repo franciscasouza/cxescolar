@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import ModalEscola from "../../components/Escola/ModalEscola";
-import TabelaEscolas from "../../components/Escola/TabelaEscolas";
-import "./EscolaPages.css";
+import ModalEscola from "../components/Escola/ModalEscola";
+import TabelaEscolas from "../components/Escola/TabelaEscolas";
+import { fetchEscolas, deleteEscola } from "@/services/apiEscolas"; // Importando o serviço
 
-function EscolasPages() {
+function Escolas() {
   const [escolas, setEscolas] = useState([]);
   const [filteredEscolas, setFilteredEscolas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +15,7 @@ function EscolasPages() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchEscolas();
+    carregarEscolas();
   }, []);
 
   useEffect(() => {
@@ -34,35 +34,29 @@ function EscolasPages() {
     }
 
     setFilteredEscolas(filteredData);
-    setCurrentPage(1); // Reinicia a paginação ao aplicar filtros
+    setCurrentPage(1);
   }, [filtro, busca, escolas]);
 
-  const fetchEscolas = async () => {
+  // 🔥 Função para buscar escolas usando o serviço
+  const carregarEscolas = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("https://localhost:7165/api/Escolas");
-      const data = await response.json();
-
-      const uniqueEscolas = Array.from(
-        new Set(data.map((escola) => escola.id))
-      ).map((id) => data.find((escola) => escola.id === id));
-
-      setEscolas(uniqueEscolas);
-      setFilteredEscolas(uniqueEscolas); // Inicializa a lista filtrada
+      const data = await fetchEscolas();
+      setEscolas(data);
+      setFilteredEscolas(data); // Inicializa a lista filtrada
     } catch (error) {
-      console.error("Erro ao carregar as escolas:", error);
+      console.error("Erro ao carregar escolas:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // 🔥 Função para deletar escola
   const handleDelete = async (id) => {
     if (window.confirm("Deseja realmente excluir esta escola?")) {
       try {
-        await fetch(`https://localhost:7165/api/Escolas/${id}`, {
-          method: "DELETE",
-        });
-        fetchEscolas();
+        await deleteEscola(id);
+        carregarEscolas(); // Atualiza a lista após deletar
       } catch (error) {
         console.error("Erro ao excluir escola:", error);
       }
@@ -77,14 +71,14 @@ function EscolasPages() {
   const closeModal = () => {
     setSelectedEscola(null);
     setIsModalOpen(false);
-    fetchEscolas();
+    carregarEscolas();
   };
 
   const clearFilters = () => {
     setFiltro("");
     setBusca("");
-    setFilteredEscolas(escolas); // Usa os dados já carregados no estado original
-    setCurrentPage(1); // Reinicia a paginação
+    setFilteredEscolas(escolas);
+    setCurrentPage(1);
   };
 
   const totalPages = Math.ceil(filteredEscolas.length / itemsPerPage);
@@ -161,4 +155,4 @@ function EscolasPages() {
   );
 }
 
-export default EscolasPages;
+export default Escolas;

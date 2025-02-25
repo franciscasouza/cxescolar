@@ -1,104 +1,103 @@
-import { Drawer, Box, List, ListItem, ListItemIcon, ListItemText, useTheme, useMediaQuery } from "@mui/material";
-import { Link } from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home";
-import ReportIcon from "@mui/icons-material/Report";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SchoolIcon from "@mui/icons-material/School";
-import CategoryIcon from "@mui/icons-material/Category";
+import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/slices/authSlice";
+import {
+  HomeIcon,
+  Cog6ToothIcon,
+  ChartBarIcon,
+  AcademicCapIcon,
+  Squares2X2Icon,
+  Bars3Icon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 const sidebarItems = [
-  { text: "Home", icon: <HomeIcon />, path: "/" },
-  { text: "Escolas", icon: <SchoolIcon />, path: "/escolas" },
-  { text: "Tipologias", icon: <CategoryIcon />, path: "/tipologias" },
-  { text: "Relatórios", icon: <ReportIcon />, path: "/relatorios" },
-  { text: "Configurações", icon: <SettingsIcon />, path: "/configuracoes" },
+  { text: "Home", icon: <HomeIcon className="w-6 h-6" />, path: "/" },
+  {
+    text: "Escolas",
+    icon: <AcademicCapIcon className="w-6 h-6" />,
+    path: "escolas",
+  },
+  {
+    text: "Tipologias",
+    icon: <Squares2X2Icon className="w-6 h-6" />,
+    path: "tipologias",
+  },
+  {
+    text: "Relatórios",
+    icon: <ChartBarIcon className="w-6 h-6" />,
+    path: "relatorios",
+  },
+  {
+    text: "Configurações",
+    icon: <Cog6ToothIcon className="w-6 h-6" />,
+    path: "configuracoes",
+  },
 ];
 
-const Sidebar = ({ 
-  mobileOpen, 
-  handleDrawerToggle, 
-  desktopOpen, 
-  handleDesktopToggle, 
-  isMobile,
-  drawerWidth 
-}) => {
-  const theme = useTheme();
+const Sidebar = ({ isOpen, toggleSidebar }) => {
+  const dispatch = useDispatch();
 
-  const renderSidebarContent = () => (
-    <Box 
-      sx={{ 
-        width: drawerWidth, 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column' 
-      }}
-    >
-      <List>
-        {sidebarItems.map((item) => (
-          <ListItem 
-            key={item.text} 
-            component={Link} 
-            to={item.path}
-            onClick={isMobile ? handleDrawerToggle : undefined}
-            sx={{
-              '&:hover': {
-                backgroundColor: theme.palette.action.hover,
-              },
-              borderRadius: 2,
-              margin: 1,
-            }}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+  const handleLogout = () => {
+    dispatch(logout());
+    window.location.href = "/login";
+  };
 
   return (
-    <>
-      {/* Mobile Drawer */}
-      {isMobile && (
-        <Drawer
-          variant="temporary"
-          anchor="left"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            '& .MuiDrawer-paper': { 
-              boxSizing: 'border-box', 
-              width: drawerWidth 
-            },
-          }}
+    <aside
+      className={`h-screen bg-blue-900 text-white fixed top-0 left-0 transition-all duration-300 z-50 shadow-lg flex flex-col
+      ${isOpen ? "w-56" : "w-16"}`}
+    >
+      {/* Header do Sidebar */}
+      <div
+        className={`flex items-center mb-6 p-4 ${isOpen ? "justify-between" : "justify-center"}`}
+      >
+        {isOpen && <h2 className="text-lg font-bold">Caixa Escolar</h2>}
+        <button
+          className="text-white text-2xl focus:outline-none"
+          onClick={toggleSidebar}
         >
-          {renderSidebarContent()}
-        </Drawer>
-      )}
+          <Bars3Icon className="w-6 h-6" />
+        </button>
+      </div>
 
-      {/* Desktop Drawer */}
-      {!isMobile && (
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={desktopOpen}
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-              position: 'relative',
-            },
-          }}
-        >
-          {renderSidebarContent()}
-        </Drawer>
-      )}
-    </>
+      {/* Menu de Navegação */}
+      <nav className="flex-grow">
+        <ul className="space-y-2">
+          {sidebarItems.map((item) => (
+            <li key={item.text}>
+              <NavLink
+                to={item.path}
+                end
+                className={({ isActive }) =>
+                  `flex items-center p-3 rounded-md transition ${
+                    isActive ? "bg-blue-700" : "hover:bg-blue-800"
+                  }`
+                }
+              >
+                {item.icon}
+                <span
+                  className={`ml-3 transition-opacity ${!isOpen && "hidden"}`}
+                >
+                  {item.text}
+                </span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* Botão de Logout fixado na parte inferior */}
+      <button
+        onClick={handleLogout}
+        className="flex items-center p-3 mt-auto rounded-md transition w-full text-whitegi hover:text-red-600"
+      >
+        <ArrowLeftOnRectangleIcon className="w-6 h-6" />
+        <span className={`ml-3 transition-opacity ${!isOpen && "hidden"}`}>
+          Sair
+        </span>
+      </button>
+    </aside>
   );
 };
 
